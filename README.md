@@ -2,7 +2,7 @@
 
 This is a workshop for beginners to learn the Go programming language.
 
-## Materials:
+## Useful Links:
 - [Go Tour](https://tour.golang.org/)
 - [Go by Example](https://gobyexample.com/)
 - [Go Documentation](https://golang.org/doc/)
