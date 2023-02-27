@@ -1,0 +1,382 @@
+# Go Beginner Workshop
+23. Februar 2023
+
+Jakob Blume
+me@jblume.dev
+
+## About Me
+
+- 2014 erstes Go Kundenprojekt (Version 1.4)
+- 2018 - 2022 Co-Founder & Head of Infrastructure bei [EntwicklerHeld](https://platform.entwicklerheld.de/)
+- seit 2022 HUK DS-Gesundheit & DS-Mobilität
+- Einzelne Workshops zum Thema: Gründung & Kubernetes
+- Kein Go Native Speaker // Googelt auch oft, sehr oft
+- Besessen von IT ❤️
+
+## Ablauf
+
+- 09:00 - 12:00: Teil 1
+- 12:00 - 13:00: Mittagspause
+- 13:00 - 17:00: Teil 2
+- **On Demand Kaffeepausen**
+
+## Vorbemerkungen
+- Slides & GitHub Repo als Hand Out
+- Weiterführende Links (Talks, Blog Artikel, usw.)
+- Fragen jederzeit
+- [[s]](#3) = Quellenangabe
+- Wenn andere Sprachen als (Gegen-)Beispiel für etwas herhalten müssen: Sorry, no offense @Java
+
+## Inhalt
+
+- Go Einsteiger Workshop (1 Tag)
+- Go Basics, anhand von einem algorithmischem Beispiel
+- Go Real World Example (klassisches BFF) mit **OpenAI API** (jeder selbst bzw. in Gruppen)
+- Lesung der Go Tora :)
+
+## Was ist Go?
+
+- Go / Golang
+- Entwickler: Robert Griesemer, Rob Pike, Ken Thompson, u.a.
+- Statisch typisiert, wie **Java**
+- Lernkurve, wie **Python**
+- Performance, wie **C** (aber auch C# und Java)
+- Imperative Programmiersprache, im Gegensatz zu **Terraform** oder **SQL**
+- Open Source und supported durch Google
+- Relativ junge Sprache (2012 Version 1.0)
+
+## Was ist Go?
+
+- Erfolgsfaktoren [[s]](https://www.youtube.com/watch?v=rFejpH_tAHM)
+    - speed of compilation 
+    - speed of execution
+    - deployment
+    - tools & libraries
+- Guiding Principles [[s]](https://dave.cheney.net/practical-go/presentations/qcon-china.html#_guiding_principles)
+    - simplicity
+    - readability
+    - productivity
+
+## Was ist Go?
+
+- Perfect-Match für Microservices
+- Viele Technologien in der "cloud-nativen" Welt sind in Go umgesetzt (e.g. Kubernetes)
+- Großartige Community (Conferences, Speaker, People...)
+- Go ist anders als Python, Java & JavaScript
+- Am Ende: Auch nur eine weitere Programmiersprache
+
+## Basics - Live Coding
+
+- Start: **Leerer** Ordner
+- Ziel: **Organisierter** & **getesteter** Quellcode
+- Wir bauen Stück für Stück ein Projekt auf, wie wir es aktuell benutzen
+- Abzweigungen währenddessen, um die einzelnen Strukturen kennenzulernen
+- Wir machen ganz entspannt und versuchen uns Zeit zu nehmen
+
+## Savepoint 090 - Main
+
+- Einstiegspunkt main() Func im main package
+
+## Savepoint 100 - Function
+
+- Funktion definieren
+- Eingabeparameter und Rückgabewert(e)
+- Variablendeklaration
+- If, Then, Else
+- For-Loop
+
+## Savepoint 110 - Pointer
+
+- Pointer vs. Value
+- Java per Default, Pointer
+- Golang per Default, Value
+- Pointer, warum?
+    - nil Wert hat eine Bedeutung
+    - Manipulation des Wertes
+- Equalness
+
+## Savepoint 115 - Slice
+
+- Slices
+- Empty Value: nil
+- append() kann mit nil Slice Umgehen
+- append vs. assign
+
+## Savepoint 120 - Map
+
+- Maps
+- Empty Value: nil
+
+## Savepoint 130 - Errors
+
+- Errors Are Values
+- Unterschied zu Try Catch
+- Unterschied zum Stack Trace
+- Unterschied zum Panic
+
+## Savepoint 135 - Structs
+
+- Was ist ein Type?
+- Erstellen von komplexen Strukturen
+- Äquivalent zu Klassen in Java
+- Leichtgewichtige Definition
+- Darauf aufgelegt, oft verwendet zu werden
+- Wenn es der Lesbarkeit dient also gerne oft einsetzen
+- Composition statt Inheritance
+
+## Savepoint 140 - Methods
+
+- Receiver
+- Pointer vs. Value based
+- Naming Änderung
+
+## Savepoint 150 - Interfaces
+
+- Implizit
+- Interfaces sind wichtig
+- Und auch nicht, vor allem wenn realistisch nur eine Implementierung dran hängt
+- The bigger the interface, the weaker the abstraction. (Beispiel in aktuellen Services)
+- Umbenennen von Methoden, um klare Namen zu haben
+- Interface am Konsumenten definieren
+
+## Savepoint 160 - HTTP Server
+
+- Build In HTTP Server Implementierung
+- Struct für Request
+- Error wird geforwarded
+- Einfache Text Response
+- Server Struct mit Algorithm Field
+
+## Savepoint 170 - Organize Code
+
+- Pakete und Ordner
+- Ordner zum abgrenzen von Paketen
+- Pro Paket ein Ordner
+- Best Practice: Ordner Name = Package Name
+- Visibility
+- Es gibt keine Subpackages bzw. keine Package Hierarchie
+- go.mod File
+    - Legacy Modus (ohne go.mod) über $GOPATH/src
+    - Module Modus über go.mod Datei (immer verwenden, wenn es geht)
+- Keine offizielle Struktur durch das Go Core Dev Team vorgegeben
+- [Community Repo](https://github.com/golang-standards/project-layout) mit Sammlung von etablierter Struktur
+- Für den Start ist eine einfache **`main.go`** und **`go.mod`** mehr als genug
+- Die wichtigsten Ordner:
+    - <pre>/cmd</pre>Abgrenzung einzelner Applikationen
+    - <pre>/internal</pre>Interner Quellcode (kann nicht von anderen importiert werden)
+    - <pre>/pkg</pre>Code der von externen Anwendungen benutzt werden kann
+- Weitere Ordner sind u.a. **`/vendor`**, **`/api`**, **`/docs`**
+- <pre style="text-decoration: line-through;">/src</pre> Go ist kein Java ;)
+
+## Savepoint 180 - Testing
+
+- Testing der einzelnen Komponenten / Ebenen
+- Table Tests für Algorithm Implementierungen
+- Table Tests für Http Handler
+- Mocking durch Interface möglich (Interface kann auch im Nachhinein definiert werden - #ImplicitInterfaces)
+- Ausführen einzelner Tests mit -run
+- Meine Empfehlung: "Integrations" Test mit Datenbank Container + Selektive Unit Tests für Stellen mit viel Business Logik
+
+## Savepoint 190 - Packaging: Das Go Artefakt
+
+- Eines der schönsten Dinge an Go
+- Statisch gelinkte Binärdatei
+- 1 Datei, direkt ausführbar
+- Beispiel Docker Image, basierend auf dem `scratch` Image
+
+.code ../00-basics/the-go-binary/Dockerfile
+
+- Im Cloud Kontext (v.a. im Serverless Bereich) spielen Artefakt Größen eine wichtige Rolle
+- Kleinstes Artefakt 1 - 2 MB groß (mit Webserver ca. 4 MB)
+
+## Savepoint 190 - Packaging: Das Go Artefakt
+
+- Die wichtigsten Kommandos:
+    - <pre>go build<pre>
+    - <pre>go build -o app<pre>
+    - <pre>go build -o app -ldflags="-s -w"<pre>
+- Eher IDE Funktionen benutzen:
+    - <pre>go test ./...<pre>
+- Nur für "Playground-Code" benutzen:
+    - <pre>go run main.go<pre>
+
+## Zusammenfassung - Basic Coding
+
+- Überschaubare Strukturen & Konzepte, viel Impact
+- Keine Dependencies für die Umsetzung benötigt!
+- Ähnliche Struktur, wie in den aktuellen Repositories
+
+##
+
+<div style="color:white; position: fixed; bottom: 0; width: 100%; margin-bottom: 30px; font-size: 3rem">
+    Kaffeepause
+</div>
+
+.background images/golang.jpg
+
+## Real World Example
+
+## Real World Example
+
+- Self-paced oder Teamarbeit
+- BFF = Backend For Frontend
+- OpenAI API als Backend API
+- 1 Endpunkt: POST Endpunkt, welcher einen Pfad + einen Promt entgegen nimmt und diesen an die OpenAI API schickt. Die Response ist ein JSON Objekt mit dem generierten Text.
+- 1 Endpunkt: POST Endpunkt, welcher einen Textinhalt + einen Promt entgegen nimmt und diesen an die OpenAI API schickt. Die Response ist ein JSON Objekt mit dem generierten Text.
+- Hoffentlich ist die API nicht down, ihr bekommt das Secret von mir
+- Muss nicht fertig umgesetzt, aber ausführbar sollte der Code sein
+- Am Ende Reviewen wir die Lösungen gegenseitig
+
+## Zusammenfassung - Real World Example
+
+- Was hat euch Schwierigkeiten gemacht?
+- Was ist euch gut gelungen, bzw. wo hattet ihr das Gefühl dass eure Umsetzung gut mit dem Use Case harmoniert hat?
+- Gibt es etwas, was ihr in anderen Sprachen besser hättet umsetzen können? (auch einzelne Statements)?
+
+##
+
+<div style="color:white; position: fixed; bottom: 0; width: 100%; margin-bottom: 30px; font-size: 3rem">
+    Kaffeepause
+</div>
+
+.background images/golang.jpg
+
+## Go Proverbs + "Keep in Mind" - Sprüche
+
+- [Go Proverbs](https://go-proverbs.github.io/)
+- ["Keep in Mind" - Sprüche](https://dave.cheney.net/practical-go/presentations/qcon-china.html)
+
+## Gofmt's style is no one's favorite, yet gofmt is everyone's favorite.
+
+— [Go Proverb](https://go-proverbs.github.io/)
+
+## Errors are values. 
+
+— [Go Proverb](https://go-proverbs.github.io/)
+
+## Don't panic. 
+
+— [Go Proverb](https://go-proverbs.github.io/)
+
+## The bigger the interface, the weaker the abstraction.
+
+— [Go Proverb](https://go-proverbs.github.io/)
+
+## The greater the distance between a name’s declaration and its uses, the longer the name should be. 
+
+— Von [Andrew Gerrand](https://go.dev/talks/2014/names.slide#4)
+
+## Keep package main as small as possible
+
+— Von [[Dave Cheney]](https://dave.cheney.net/practical-go/presentations/qcon-china.html#_keep_package_main_small_as_small_as_possible)
+- main.main ist ein Singleton und wir zusammen mit main.init nur einmal ausgeführt
+- Schlecht zu testen
+
+## Clear is better than clever.
+
+— [Go Proverb](https://go-proverbs.github.io/)
+
+## Reflection is never clear.
+
+— [Go Proverb](https://go-proverbs.github.io/)
+
+## Documentation is for users.
+
+— [Go Proverb](https://go-proverbs.github.io/)
+
+## A little copying is better than a little dependency.
+
+— [Go Proverb](https://go-proverbs.github.io/)
+
+## [A little] duplication is far cheaper than the wrong abstraction. 
+
+— Von [Sandy Metz](https://dave.cheney.net/practical-go/presentations/qcon-china.html#_avoid_package_names_like_base_common_or_util)
+
+## With the unsafe package there are no guarantees.
+
+— [Go Proverb](https://go-proverbs.github.io/)
+
+## Don’t let package names steal good variable names.
+
+— Von [[Dave Cheney]](https://dave.cheney.net/practical-go/presentations/qcon-china.html#_dont_name_your_variables_for_their_types)
+
+## Avoid package names like base, common, or util
+
+— Von [[Dave Cheney]](https://dave.cheney.net/practical-go/presentations/qcon-china.html#_avoid_package_names_like_base_common_or_util)
+- Diese Packages tendieren dazu ein wildes Sammelbecken zu werden
+- Lieber spezielle Dateien / Packages, die einen konkreten Use Case haben
+- Diese kann man dann ggf. auch in anderen Services nutzen
+
+## Return early rather than nesting deeply
+
+— Line of Sight Coding, von [Mat Ryer](https://medium.com/@matryer/line-of-sight-in-code-186dd7cdea88)
+
+.code ../02-proverb-examples/0030-return-early/deep.go
+
+## Return early rather than nesting deeply
+
+— Line of Sight Coding, von [Mat Ryer](https://medium.com/@matryer/line-of-sight-in-code-186dd7cdea88)
+
+.code ../02-proverb-examples/0030-return-early/flat.go
+
+## Discourage the use of nil as a parameter
+
+— Von [[Dave Cheney]](https://dave.cheney.net/practical-go/presentations/qcon-china.html#_discourage_the_use_of_nil_as_a_parameter)
+
+## Good naming is like a good joke. If you have to explain it, it’s not funny.
+
+— Von [[Dave Cheney]](https://dave.cheney.net/practical-go/presentations/qcon-china.html)
+
+## interface{} says nothing.
+
+— [Go Proverb](https://go-proverbs.github.io/)
+
+## Make the zero value useful.
+
+— [Go Proverb](https://go-proverbs.github.io/)
+- Coding Beispiel
+
+## Don't just check errors, handle them gracefully.
+
+— [Go Proverb](https://go-proverbs.github.io/)
+- Coding Beispiel
+
+## Don't communicate by sharing memory, share memory by communicating.
+
+— [Go Proverb](https://go-proverbs.github.io/)
+- Eigentlich ein Goroutine Thema, was auf Channels abzielt
+- Aber lässt sich auch auf globale Variablen übertragen
+- Coding Beispiel
+
+## Obvious code is important. What you can do in one line you should do in three.
+
+— Von [Ukiah Smith](https://dave.cheney.net/practical-go/presentations/qcon-china.html#_choose_identifiers_for_clarity_not_brevity)
+
+## Only handle an error once 
+
+— Von [[Dave Cheney]](https://dave.cheney.net/practical-go/presentations/qcon-china.html#_only_handle_an_error_once)
+- Error Wrapping anstelle von Error Logging
+- Error Logging zählt als Behandlung des Fehlers
+- Logging hat das Problem, dass einem am Ende der Kette der Kontext der Fehlerursache fehlt
+
+## Don’t name your variables for their types
+
+— Von [[Dave Cheney]](https://dave.cheney.net/practical-go/presentations/qcon-china.html#_dont_name_your_variables_for_their_types)
+
+## Zusammenfassung - Proverbs & Hilfreiche Hinweise
+
+- Checkliste für das generelle Programmieren
+- Q: Wie soll man das alles beachten? / A: Pull Requests
+    - Pull Requests **wirklich** nutzen (Ersteller und Reviewer)
+    - Vetrauen des Reviewers gewinnen
+    - Grundlage für Themen im Backend Chapter (für breiten Wissenstransfer)
+    - Tests schreiben
+- Große Konzepte Recherchieren (ggf. Quelle in Umsetzung Verlinken)
+
+## 
+
+<div style="color:white; position: fixed; bottom: 0; width: 100%; margin-bottom: 30px; font-size: 3rem">
+    Ende
+</div>
+
+.background images/golang.jpg
